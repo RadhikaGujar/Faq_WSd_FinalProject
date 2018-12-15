@@ -91,4 +91,9 @@ class RegisterController extends Controller
 
         return redirect('/login')->with('status', $status);
     }
+    protected function registered(Request $request, $user)
+    {
+        $this->guard()->logout();
+        return redirect('/login')->with('status', 'Verification link has been sent to your mail. Please click on it to login.');
+    }
 }
