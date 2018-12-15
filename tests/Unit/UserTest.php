@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\User;
 
 class UserTest extends TestCase
 {
@@ -33,4 +34,10 @@ class UserTest extends TestCase
         $user = factory(\App\User::class)->make();
         $this->assertTrue(is_object($user->profile()->get()));
     }
+    public function testEmailDatatype(){
+        $user = User::inRandomOrder()->first();
+        $this->assertInternalType('string',$user->email);
+    }
+
+
 }
