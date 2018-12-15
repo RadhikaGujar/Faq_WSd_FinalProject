@@ -73,5 +73,22 @@ class RegisterController extends Controller
         Mail::to($user->email)->send(new EmailVerificationMailable($user));
         return $user;
     }
+    public function verifyEmailFirst($verifyToken)
+    {
+        $verifyEmailFirst = User::where('verifyToken', $verifyToken)->first();
+        if(isset($verifyEmailFirst) ){
+            $user = $verifyEmailFirst;
+            if(!$user->email_verified_at) {
+                $verifyEmailFirst->email_verified_at = date('Y-m-d H:i');
+                $verifyEmailFirst->save();
+                $status = "Email is verified successfully. You can continue to Login.";
+            }else{
+                $status = "Email has been successfully verified earlier. You can continue to Login";
+            }
+        }else{
+            return redirect('/login')->with('warning', "There is an error with identification of your email id.");
+        }
 
+        return redirect('/login')->with('status', $status);
+    }
 }
