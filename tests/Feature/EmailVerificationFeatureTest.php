@@ -21,7 +21,7 @@ class EmailVerificationFeatureTest extends TestCase
         Mail::fake();
         $user  = User::create([
             'email' => 'radhikagujar13@gmail.com',
-            'password' => bcrypt('123456'),
+            'password' => bcrypt('967391'),
             'verifyToken' => str_random(40)
         ]);
         $user->save();
