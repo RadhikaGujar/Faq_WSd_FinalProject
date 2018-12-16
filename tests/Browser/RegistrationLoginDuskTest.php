@@ -17,18 +17,24 @@ class RegistrationLoginDuskTest extends DuskTestCase
     public function testRegistrationLogin(){
         $this->browse(function ($browser)  {
             $browser->visit('/register')
-                ->type('email', 'rg583@njit.edu')
+                ->type('email', 'radhikagujar9@gmail.com')
                 ->type('password', '123456789')
                 ->type('password_confirmation', '123456789')
                 ->press('Register');
         });
-
-        $testuser = User::where('email','rg583@njit.edu')->first();
+        $testuser = User::where('email','radhikagujar9@gmail.com')->first();
         $this->browse(function ($browser) use ($testuser)
         {
                 $Token= $testuser->verifyToken;
                 $browser->visit(url('user/verify', $Token))
                 ->assertPathIs('/login');
+        });
+        $this->browse(function ($browser) use ($testuser) {
+            $browser->visit('/login')
+            ->type('email', $testuser->email)
+            ->type('password', '123456789')
+                ->press('Login')
+                ->assertPathIs('/home');
         });
         $testuser->delete();
     }
