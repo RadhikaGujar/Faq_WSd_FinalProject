@@ -6,6 +6,7 @@ use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\User;
+use App\Question;
 
 class RegistrationLoginDuskTest extends DuskTestCase
 {
@@ -36,6 +37,15 @@ class RegistrationLoginDuskTest extends DuskTestCase
                 ->press('Login')
                 ->assertPathIs('/home');
         });
+        $this->browse(function ($browser) use ($testuser) {
+            $browser->visit('/home')
+                ->clickLink('Create a Question')
+                ->assertPathIs('/question/create')
+                ->type('body', 'Hello, This is a Test Question')
+                ->press('Save')
+                ->assertPathIs('/home');
+        });
+        Question::where('user_id',($testuser->id))->delete();
         $testuser->delete();
     }
 }
